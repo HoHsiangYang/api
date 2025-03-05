@@ -19,8 +19,8 @@ export class AuthController {
   }
 
   @Post('register') // 註冊新用戶
-  async register(@Body() body: { email: string; password: string; role?: 'admin' | 'user' }) {
-    return this.authService.register(body.email, body.password, body.role);
+  async register(@Body() body: { email: string; password: string; role?: 'admin' | 'user' , fullName:string, phone:string, address:string}) {
+    return this.authService.register(body.email, body.password, body.role, body.fullName, body.phone, body.address);
   }
 
   @Post('forgot-password') // 忘記密碼

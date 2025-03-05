@@ -12,8 +12,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { id: number; email: string; role: string  }) {
+  async validate(payload: { id: number; email: string; role: string, fullName:string, phone:string, address:string}) {
     console.log('🔍 JWT Payload:', payload); // ✅ 檢查 JWT 解析出的內容
-    return { id: payload.id, email: payload.email, role: payload.role }; // JWT 驗證成功後返回的用戶資訊
+    return { id: payload.id, email: payload.email, role: payload.role , fullName: payload.fullName , phone: payload.phone , address: payload.address }; // JWT 驗證成功後返回的用戶資訊
   }
 }

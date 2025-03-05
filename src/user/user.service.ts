@@ -24,6 +24,10 @@ export class UserService {
       data: {
         email: createUserDto.email,
         password: hashedPassword,
+        fullName: createUserDto.fullName, // ✅ 必填
+        phone: createUserDto.phone || null, // ✅ 選填
+        address: createUserDto.address || null, // ✅ 選填
+        role: 'user', // ✅ 預設角色
       },
     });
 

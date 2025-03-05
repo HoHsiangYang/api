@@ -18,7 +18,7 @@ export class UserController {
    */
   @Get()
   @Roles('admin') // ✅ **只有 `admin` 可以存取**
-  @UseGuards(RolesGuard) // 🔐 **角色權限管理**
+  @UseGuards(JwtAuthGuard, RolesGuard) // 🔐 **角色權限管理**
   getAllUsers() {
     return this.userService.findAll(); // 🔹 取得所有用戶
   }
@@ -74,5 +74,10 @@ export class UserController {
   @UseGuards(RolesGuard) // 🔐 **角色權限管理**
   deleteUser(@Param('id') id: string) {
     return this.userService.remove(Number(id)); // 🔹 刪除用戶
+  }
+
+  @Patch('profile') // 🟢 更新個人資料 API
+  async updateProfile(@Request() req, @Body() updateData: { fullName?: string; phone?: string; address?: string }) {
+    return this.userService.update(req.user.id, updateData);
   }
 }

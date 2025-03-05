@@ -18,13 +18,13 @@ export class AuthService {
     const passwordValid = await bcrypt.compare(password, user.password);
     if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
-    const token = this.jwtService.sign({ id: user.id, email: user.email, role: user.role });
+    const token = this.jwtService.sign({ id: user.id, email: user.email, role: user.role , fullName:user.fullName, phone:user.phone, address:user.address});
 
     return { access_token: token }; 
   }
 
   // 🟢 **用戶註冊**
-  async register(email: string, password: string, role: 'admin' | 'user' = 'user') {
+  async register(email: string, password: string, role: 'admin' | 'user' = 'user', fullName:string, phone:string, address:string) {
     // **檢查 email 是否已存在**
     const existingUser = await this.prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -39,6 +39,9 @@ export class AuthService {
       data: { 
         email, 
         password:  hashedPassword, 
+        fullName,
+        phone,
+        address,
         role: role as 'user' | 'admin',
       },
     });

@@ -19,6 +19,9 @@ model User {
   id        Int    @id @default(autoincrement()) // 自動遞增的主鍵 (Primary Key)
   email     String @unique                      // 必須唯一的 Email 欄位
   password  String                              // 加密後的密碼
+  fullName String?   // 姓名
+  phone    String?  // 電話（可選）
+  address  String?  // 單位/地址（可選）
   role      String @default("user")             // 角色 (admin / user)，預設是 "user"
-  createdAt DateTime @default(now())            // 用戶註冊時間，預設為當前時間
+  createdAt DateTime @default(now())  // 註冊時間
 }
