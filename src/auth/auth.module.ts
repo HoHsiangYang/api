@@ -1,20 +1,29 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config'; // ✅ 加入環境變數管理
+import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { PrismaService } from '../prisma/prisma.service';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    UserModule, // ✅ 確保 `UserModule` 可用
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'default_secret', // ✅ 環境變數管理 JWT 秘鑰
-      signOptions: { expiresIn: '1h' }, // Token 過期時間
+    ConfigModule, // 確保 `.env` 變數可用
+    UserModule,
+    PassportModule,
+    JwtModule.registerAsync({ // 使用 `registerAsync` 確保 `JWT_SECRET` 正確讀取
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET') || 'default_secret',
+        signOptions: { expiresIn: '1h' },
+      }),
     }),
   ],
-  controllers: [AuthController], // ✅ `/auth` 相關 API 控制器
-  providers: [AuthService, PrismaService], // ✅ `AuthService` 處理身份驗證
-  exports: [AuthService],
+  controllers: [AuthController],
+  providers: [AuthService, PrismaService, JwtStrategy],
+  exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

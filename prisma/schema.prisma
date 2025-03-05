@@ -1,21 +1,24 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// 這是 Prisma 的 Schema 檔案，負責定義資料庫模型
+// Prisma 會根據這個 Schema 來產生 TypeScript 物件，方便我們操作資料庫
+// 更多資訊請參考官方文件: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//每次修改完請要遷移讓資料庫更新 npx prisma migrate dev --name add_role_field
+//Prisma CLI npx prisma studio
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" // 產生 Prisma Client 來操作資料庫
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"  // 指定資料庫類型為 PostgreSQL
+  url      = env("DATABASE_URL") // 透過環境變數讀取資料庫連線字串
 }
 
+// 🔹 User 資料表（對應 PostgreSQL 的 `user` Table）
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  createdAt DateTime @default(now())
+  id        Int    @id @default(autoincrement()) // 自動遞增的主鍵 (Primary Key)
+  email     String @unique                      // 必須唯一的 Email 欄位
+  password  String                              // 加密後的密碼
+  role      String @default("user")             // 角色 (admin / user)，預設是 "user"
+  createdAt DateTime @default(now())            // 用戶註冊時間，預設為當前時間
 }
