@@ -1,7 +1,7 @@
 // 負責處理身份驗證相關的 API
 import { Controller, Post, Get, Body, UseGuards, Req } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { AuthService } from '../services/auth.service';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('auth')//負責 /auth 開頭的 API
 export class AuthController {
@@ -10,12 +10,6 @@ export class AuthController {
   @Post('login')
   async login(@Body() body: { email: string; password: string }) {
     return this.authService.login(body.email, body.password);
-  }
-
-  @Get('me')
-  @UseGuards(JwtAuthGuard)
-  getProfile(@Req() req){
-    return req.user;
   }
 
   @Post('register') // 註冊新用戶

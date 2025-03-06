@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException, ConflictException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -18,7 +18,7 @@ export class AuthService {
     const passwordValid = await bcrypt.compare(password, user.password);
     if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
-    const token = this.jwtService.sign({ id: user.id, email: user.email, role: user.role , fullName:user.fullName, phone:user.phone, address:user.address});
+    const token = this.jwtService.sign({ id: user.id, email: user.email, role: user.role , fullName: user.fullName, phone: user.phone, address: user.address});
 
     return { access_token: token }; 
   }
@@ -82,5 +82,18 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid or expired token');
     }
+  }// 取得所有用戶
+  async getAllUsers() {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        address: true,
+        role: true,
+      },
+    });
   }
+
 }

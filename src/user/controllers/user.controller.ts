@@ -1,10 +1,10 @@
 // 處理 user 相關的 API 請求
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, ForbiddenException } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator'; // 🔹 自定義 `@Roles()` 裝飾器
+import { UserService } from './../services/user.service';
+import { CreateUserDto } from './../dto/create-user.dto';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { Roles } from '../../auth/decorators/roles.decorator'; // 🔹 自定義 `@Roles()` 裝飾器
 
 
 @Controller('user') // 🔹 這個 Controller 負責處理 `/user` 開頭的 API 路由

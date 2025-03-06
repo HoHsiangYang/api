@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from './../services/user.service';
+import { UserController } from './../controllers/user.controller';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Module({
   controllers: [UserController], // ✅ 註冊 `UserController`，處理 `/user` API
